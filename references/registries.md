@@ -1,6 +1,6 @@
 # Registries — discovery pattern, seed list, install
 
-This skill is **library-agnostic and time-aware**. Component libraries in the shadcn ecosystem rise, fall, and rebrand constantly. A frozen list here would be stale in weeks. Instead, follow the **discovery pattern** below every time you enter Phase 4 of SKILL.md.
+This skill is **library-agnostic and time-aware**. Component libraries in the shadcn ecosystem rise, fall, and rebrand constantly. A frozen list here would be stale in weeks. Instead, follow the **discovery pattern** below every time you enter Phase 5 of SKILL.md.
 
 ## The discovery pattern (run this every time)
 

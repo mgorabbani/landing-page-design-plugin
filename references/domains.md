@@ -2,13 +2,15 @@
 
 Twelve recipes, each with the same shape. Treat these as starting points — adapt to what the user actually told you.
 
+> **Important — component picks below are illustrative, not canonical.** The named shadcn-compatible components (`@aceternity/lamp`, `@magicui/marquee`, etc.) were current as of April 2026 but the ecosystem moves fast. When you reach the component phase, still run the discovery procedure in `references/registries.md` — browse each library's live docs, confirm the component still exists under that name, and stay open to newer alternatives that fit the section better. The *aesthetic direction* and *section flow* in each recipe are the durable parts; the specific component names are seeds.
+
 Each recipe has:
 
 - **Visitor need** — the feel/know/do for the typical visitor
 - **Critical CTA** — the one conversion that matters
 - **Section flow** — ordered section list, with count range
-- **Aesthetic defaults** — palette hint, typography, motion intensity
-- **Component picks** — concrete shortlist per section (registry-qualified)
+- **Aesthetic defaults** — palette hint, typography, motion intensity — *the durable part of the recipe*
+- **Component picks** — seed shortlist per section, registry-qualified; *verify live before installing*
 - **Assets** — icons, illustrations, photos, patterns
 - **llms.txt focus** — what to emphasize for crawlers
 
@@ -39,7 +41,7 @@ Registry shorthand: `@shadcn` (default), `@magicui`, `@aceternity`, `@kibo-ui`, 
 - Testimonials: `@magicui/marquee` (slow) or `@kibo-ui/testimonial`
 - Booking: shadcn Form + Calendly/scheduler iframe
 
-**Assets** — Lucide (stethoscope, heart, shield, calendar). Real portraits (provided by user, or tastefully staged Unsplash — but flag if using stock). No cartoon illustrations.
+**Assets** — Lucide (stethoscope, heart, shield, calendar). Portraits: user-provided wherever possible; otherwise curate via the Unsplash API Tier 1 workflow with queries like `professional doctor portrait` or `medical staff headshot` and render attribution per `references/assets.md`. In the handoff, flag that real practitioner photography should replace the stock portrait before launch — stock reads as fake on medical sites. No cartoon illustrations.
 
 **llms.txt focus** — Practitioner name, specialty, location, insurance accepted, booking URL, hours.
 

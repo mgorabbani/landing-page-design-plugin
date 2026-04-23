@@ -10,7 +10,9 @@ This is an **instruction for you, the agent.** It's not a script. Its job is to 
 
 You get there by reasoning in a strict order:
 
-**domain → single-page vs multi-page → section list → what goes inside each section → components → assets (icons, illustrations, photos, patterns, 3D, video) → design tokens → build**
+**domain → single-page vs multi-page → section list → what goes inside each section (including the *copy*) → components → assets (icons, illustrations, photos via Unsplash API, patterns, 3D, video) → design tokens → build**
+
+**Default assumption: single-page.** Most landing-page requests are single-page — a marketing launch, a portfolio intro, a restaurant front door. Only branch to multi-page when the user says so or the domain obviously needs it (SaaS with separate pricing/docs, agency with case-study routes, e-commerce with product pages).
 
 At each step, **ask the user only what you can't infer**, check the filesystem for what you can, and — critically — **look up what's current on the web** before you pick any library or component. This skill bundles no MCP, no frozen catalog, no vendored code. It teaches you a discovery pattern and seeds you with a starting list of libraries and sources. The ecosystem moves fast (shadcn/ui, Magic UI, Aceternity, Kibo UI, Launch UI, Skiper, 21st.dev, and new entrants every quarter) — always verify before committing.
 
@@ -20,21 +22,24 @@ The single most important diagram in this skill. Every invocation follows this p
 
 ```
 1. Detect domain            → references/domains.md
-2. Single-page or multi?    → inferred from domain (ask only if ambiguous)
+2. Single-page or multi?    → default single-page; branch only on
+                              strong signal or explicit request
 3. Section list             → domain recipe gives the ordered list
 4. Section anatomy          → for each section, what content slots it needs
                               (headline, sub, visual, CTA, testimonial count...)
-5. Components per section   → browse current libraries, shortlist, pick
+5. Write the copy           → specific, not generic — references/copy.md
+6. Components per section   → browse current libraries, shortlist, pick
                               (references/components-by-section.md seeds it)
-6. Assets per section       → icon pack, illustration pack, photo source,
-                              patterns, 3D, and — only if the domain
-                              calls for it — video (options: user
-                              footage / Lottie / Rive / Remotion, etc.)
-                              (references/assets.md)
-7. Design tokens            → colors, fonts, radius, shadow, motion — BEFORE install
-8. Build                    → shadcn CLI install, edit for tokens, compose pages
-9. llms.txt                 → auto-generated from what was built
-10. Handoff                 → hand SEO off to /seo skill if the user has it
+7. Assets per section       → icon pack, illustration pack, photos via
+                              Unsplash API (no placeholders), patterns,
+                              3D, and — only if the domain calls for it —
+                              video (options: user footage / Lottie /
+                              Rive / Remotion). references/assets.md
+8. Design tokens            → colors, fonts, radius, shadow, motion — BEFORE install
+9. Build                    → shadcn CLI install, edit for tokens, compose pages
+10. llms.txt                → auto-generated from what was built
+11. Deploy handoff          → suggest vercel / netlify / cloudflare pages
+12. SEO handoff             → hand off to /seo skill if user has it
 ```
 
 Don't skip steps. Each one narrows the decision space for the next — that's how the output stays coherent.
@@ -68,19 +73,19 @@ Skip any later question that the filesystem already answered.
 
 ### Phase 2 — Ask only what matters
 
-Ask these three questions, in order, and only if context didn't already answer them. Bundle them into a single user message when possible.
+Ask these questions, in order, and only if context didn't already answer them. Bundle them into a single user message when possible.
 
 **Q1: Domain / type of site.** *(Master key. Always ask if unclear.)*
 
 > "What kind of site is this? e.g. medical practice, SaaS / dev tool, agency, e-commerce, personal portfolio, restaurant, creator / course, nonprofit, local service, crypto or DeFi, AI product, real estate — or describe it if none of those fit."
 
-**Q2: Single page or multi-page?** *(Often inferable — portfolio is usually multi, a launch page is usually single, SaaS is usually multi. Only ask if genuinely ambiguous.)*
+**Q2: Single-page or multi-page?** *(Default to single-page. Only ask when the domain obviously needs multi — SaaS with separate pricing/docs routes, an agency with case-study routes, e-commerce with product pages. For most launches, portfolios, restaurants, clinics, and creator sites, single-page is the right default.)*
 
-**Q3: Section count.** *(Suggest a default per domain and let the user nudge.)*
+**Q3: The sections I'm planning.** *(Present the domain recipe's section flow as a concrete proposal, not a count question.)*
 
-> "Doctor sites usually work well with 4–5 sections — hero, services, about/credentials, testimonials, booking CTA. Go with that, or want more or less?"
+> "For a dermatology practice I'm planning: hero → services → about/credentials → testimonials → insurance & logistics → booking CTA. Nudge me if you want different sections or order."
 
-Infer everything else: aesthetic direction, header style (full hero on homepage, compact nav on subpages), which sections belong, asset style, motion intensity. If the user volunteered aesthetic hints ("clean", "bold", "playful", brand colors, references), incorporate them — but don't interrogate for them.
+Infer everything else: aesthetic direction, header style (full hero on homepage, compact nav on subpages), asset style, motion intensity, light vs dark mode (domain-driven — medical/hospitality lean light, crypto/AI lean dark, SaaS is either). If the user volunteered aesthetic hints ("clean", "bold", "playful", brand colors, references), incorporate them — but don't interrogate for them.
 
 ### Phase 3 — Sections and section anatomy
 
@@ -118,27 +123,46 @@ Adapt the recipe to the user's specifics. Recipes are starting points, not scrip
 - CTA section → single focused headline + one button, contrast background
 - Footer → column count, social links, legal
 
-`references/components-by-section.md` has a more detailed "section anatomy" quick reference. Load it before Phase 4. Decide the anatomy first, pick components second — components are in service of the content, not the other way around.
+`references/components-by-section.md` has a more detailed "section anatomy" quick reference. Load it before Phase 5. Decide the anatomy first, pick components second — components are in service of the content, not the other way around.
 
-### Phase 4 — Discover current libraries, then shortlist components
+### Phase 4 — Write the copy before you touch components
+
+AI-slop is as much about words as visuals. "Build something amazing." "The all-in-one platform for modern teams." "Next-generation, reimagined." A site with those lines is slop even if the typography is perfect.
+
+Load `references/copy.md` and write, for each section you planned:
+
+- **Hero headline** — specific, not generic. Names a person, product, place, number, or outcome. 3 rewrites minimum.
+- **Sub-headline** — the one differentiator the headline left out. One sentence, under 15 words.
+- **CTA label** — verb + concrete object. Not "Get started." Never "Learn more."
+- **Feature titles** — 5 words max, each.
+- **Feature descriptions** — one sentence, under 20 words.
+- **Every other visible line** — re-read as a skeptic: could this appear on any competitor's site unchanged? If yes, rewrite.
+
+If you don't have enough information from the user to write a specific headline, **stop and ask one sharpening question**. A generic headline means you don't yet understand what the site is for. Components won't save that.
+
+The `references/copy.md` file has domain-specific headline shapes with worked examples, an exhaustive anti-pattern phrase list ("reimagined", "next-generation", "best-in-class"...), and the writing order to follow.
+
+### Phase 5 — Discover current libraries, then shortlist components
 
 Do NOT skip straight to the seed examples. The shadcn-compatible component ecosystem moves fast — libraries rise and fall, components get renamed, new registries appear. Follow this pattern every time:
 
-**Step 4a. Discover what's current.** Open `references/registries.md` for the discovery procedure. In short:
+**Step 5a. Discover what's current.** Open `references/registries.md` for the discovery procedure. In short:
 
 1. Fetch one or more **curated directories** (e.g. `registry.directory`, shadcn.io's awesome list, shadcn's own registry directory page). These list live shadcn-compatible registries with their namespaces.
 2. Skim the results. Note any registry that looks relevant to the domain (e.g. "animation effects" for SaaS/AI, "blocks" for marketing pages, "charts" for dashboards).
 3. Cross-check against the seed list in `references/registries.md` — use seeds as familiar anchors, but don't miss anything new.
 
-**Step 4b. Browse the library's own docs.** For each candidate library, fetch its `/docs` or `/components` page and note which components exist today under what names. Component names drift; don't invent.
+**Step 5b. Browse the library's own docs.** For each candidate library, fetch its `/docs` or `/components` page and note which components exist today under what names. Component names drift; don't invent.
 
-**Step 4c. Shortlist per section.** Use `references/components-by-section.md` as a domain-aesthetic-aware filter. It's a seed opinion — treat as a starting shortlist, then refine using what you actually found in steps 4a–4b.
+**Step 5c. Shortlist per section.** Use `references/components-by-section.md` as a domain-aesthetic-aware filter. It's a seed opinion — treat as a starting shortlist, then refine using what you actually found in steps 5a–5b.
 
-**Step 4d. Pick.** 3–5 candidates per section, then pick the best fit. If genuinely torn, present 2–3 options to the user. **Not every cool effect for every site** — a calm lamp + portrait works for a doctor hero; meteors + globe + number tickers work for crypto.
+**Step 5d. Pick.** 3–5 candidates per section, then pick the best fit. If genuinely torn, present 2–3 options to the user. **Not every cool effect for every site** — a calm lamp + portrait works for a doctor hero; meteors + globe + number tickers work for crypto.
+
+**Library-mixing limit.** Pick 2–3 libraries max per site. shadcn primitives + one animation-rich library (Magic UI or Aceternity) + optionally Launch UI for sections is a natural combo. Mixing 4+ even with tokens produces a subtly-off result — the libraries have different design languages underneath. Tokens homogenize color/radius/font, not visual voice.
 
 If you don't have web access (sandboxed, offline), say so to the user, fall back to the seeds in the references, and flag that the list may be behind the current ecosystem.
 
-### Phase 5 — Coherence lock (CRITICAL — do not skip)
+### Phase 6 — Coherence lock (CRITICAL — do not skip)
 
 **Before installing anything**, write the design tokens to `src/app/globals.css` (Tailwind v4) or `tailwind.config.ts` (v3). Tokens to define:
 
@@ -150,31 +174,39 @@ If you don't have web access (sandboxed, offline), say so to the user, fall back
 
 Only now start pulling components. **After each `npx shadcn add`**, open the installed file and replace any hardcoded colors, radii, fonts, or shadows with the tokens. When you're done, grep the final code for raw hex colors, arbitrary `rounded-[...]`, or inline font-family — those are coherence leaks.
 
-### Phase 6 — Assembly
+### Phase 7 — Assembly
 
 1. Scaffold missing infrastructure only if needed (new Next.js app, install Tailwind, init shadcn). Use `npx shadcn@latest init` with Zinc as the base color when starting fresh.
 2. Run `npx shadcn@latest add @<registry>/<component>` for each picked component. See `references/registries.md` for namespace URLs and CLI patterns.
 3. **Pick the asset sources** for this site — see `references/assets.md`. Match the domain aesthetic:
    - Icon pack (one UI set: Lucide / Phosphor / Iconify / Icons8 / Tabler / Heroicons — plus Simple Icons for brand logos)
    - Illustration pack (unDraw / Storyset / Humaaans / Blush / IRA Design — or skip if the domain wants photography instead)
-   - Photography source (user-provided preferred; Unsplash/Pexels flagged as placeholder)
+   - **Photography — use the Unsplash API workflow** (Tier 1 default). Don't ship placeholder gray boxes or `<TODO swap>` comments. For each photo slot, form a domain-keyed search query (`references/assets.md` has a query table per domain), fetch curated permalink URLs, embed them through the `<UnsplashImage>` wrapper, add `images.unsplash.com` to `next.config.js` remote patterns, and ping the download-tracking endpoint once per selected image per Unsplash's ToS. User-provided photos always take precedence. If a domain never takes photography (crypto / DeFi), skip.
    - Patterns or shapes (Hero Patterns / Haikei / SVG Backgrounds)
    - 3D (Shapefest / 3DIcons / Spline) only when the domain calls for it
    - **Video** — most sites don't need it. Ask first: does this domain actually benefit from moving footage? (SaaS product demo, creator intro reel, restaurant atmosphere, real estate walkthrough — yes. Medical, agency portfolio, local service, most nonprofits — usually no.) If yes, the options range from user-provided footage, to vector animation (Lottie / Rive) when something is small and UI-adjacent, to programmatic tools like Remotion when the video itself should be designed in React and share the site's brand tokens. See `references/assets.md` for the trade-offs. It's awareness, not a default.
 4. Write the page files. Prefer composing in `app/page.tsx` (homepage) and `app/<route>/page.tsx` (subpages). Each section is its own component under `components/sections/`.
 5. Wire up navigation between pages if multi-page. Subpage header is compact (logo + nav + single CTA); homepage header can be the immersive hero variant.
+6. **Responsive + accessibility pass** — before declaring assembly done:
+   - Open the page at 375px, 768px, and 1280px widths. Fix anything that breaks — heavy hero effects (Macbook Scroll, Hero Parallax) often need a static mobile fallback.
+   - Respect `prefers-reduced-motion`: wrap animation-heavy components in a media-query escape that disables motion for users who requested it. Most shadcn-ecosystem components don't do this by default.
+   - Check color contrast of text over hero backgrounds / images — WCAG AA (4.5:1 for body, 3:1 for large) is the minimum, not a stretch goal.
+   - Every image needs a real `alt` attribute describing what the image shows, not "hero image" or "image".
+   - Keyboard navigation: tab through the page once. Focus states must be visible on every interactive element.
 
-### Phase 7 — llms.txt generation
+### Phase 8 — llms.txt generation
 
 Generate `llms.txt` at the project root. Follow `references/llms-txt-template.md`. The file describes the site for AI crawlers — site purpose, key pages, primary CTAs, and any structured content (product list, service menu, team). Auto-populate it from what you just built.
 
-### Phase 8 — Handoff
+### Phase 9 — Handoff
 
 End with a short summary:
 
 - What was built (pages, sections, component sources)
 - Where the design tokens live
 - How to run the dev server
+- Unsplash attribution strip / credits location (so the user knows where to update if they swap images)
+- **Deploy suggestion**: one line recommending `vercel`, `netlify deploy`, or `wrangler pages deploy` depending on what's already in `package.json` — never run the deploy yourself without explicit user go-ahead.
 - One-liner: *"Want this SEO-optimized? If you have the `/seo` skill installed, run it now — it handles meta, schema.org, sitemap, Open Graph images, and performance."*
 
 ## When to load references
@@ -182,14 +214,15 @@ End with a short summary:
 Read these only when you need them — keep context lean.
 
 - `references/domains.md` — always load for Phase 3a. 12 domain recipes.
-- `references/components-by-section.md` — load for Phase 3b and Phase 4. Section anatomy (content slots) + component fit matrix.
-- `references/registries.md` — load for Phase 4. The discovery pattern, shadcn CLI commands, namespace URLs, and the doc pages to browse.
-- `references/assets.md` — load for Phase 6. Icons, illustrations, photos, patterns, 3D, and video options (only relevant if the domain calls for motion footage).
-- `references/llms-txt-template.md` — load for Phase 7.
+- `references/components-by-section.md` — load for Phase 3b and Phase 5. Section anatomy (content slots) + component fit matrix.
+- `references/copy.md` — load for Phase 4. Per-domain headline shapes, sub-head patterns, CTA vocabulary, and the exhaustive anti-pattern phrase list to check against.
+- `references/registries.md` — load for Phase 5. The discovery pattern, shadcn CLI commands, namespace URLs, and the doc pages to browse.
+- `references/assets.md` — load for Phase 7. Icons, illustrations, the Unsplash API photography workflow, patterns, 3D, and video options (only relevant if the domain calls for motion footage).
+- `references/llms-txt-template.md` — load for Phase 8.
 
 ## Example libraries (seed list — not exhaustive, not canonical)
 
-These are starting points as of April 2026. **Always run Phase 4a discovery** — new registries appear constantly, and what's trending today may not be tomorrow.
+These are starting points as of April 2026. **Always run the Phase 5 discovery step** — new registries appear constantly, and what's trending today may not be tomorrow.
 
 | Library | Typical role | Good starting picks |
 |---|---|---|
@@ -209,22 +242,48 @@ If you find a library not on this list that clearly fits, use it. The list is il
 
 These produce AI-slop. Catch yourself and choose differently.
 
-- Inter as the only font, for every domain. Pair it with a display serif, mono, or editorial sans matched to the domain.
-- Purple → pink gradient hero on a site that isn't crypto, AI, or creator. Default gradient is a tell.
-- Three-card feature grid as the only way to show features. Bento, alternating splits, tabs, and scroll-triggered reveals exist.
-- Generic stock photo of a smiling team in an office. Either use real photos or stylized illustrations; don't fake warmth.
-- Purple/blue gradient CTA button. Use the token's `--primary`, full stop.
-- Over-animating. One signature motion per page is usually enough.
-- Ignoring the domain — every SaaS doesn't look the same, every agency doesn't look the same.
+- **Generic copy.** "Build something amazing", "reimagined", "next-generation", "the all-in-one platform" — see `references/copy.md` for the full phrase blacklist. Copy slop is as bad as visual slop.
+- **Inter as the only font** for every domain. Pair it with a display serif, mono, or editorial sans matched to the domain.
+- **Purple → pink gradient hero** on a site that isn't crypto, AI, or creator. Default gradient is a tell.
+- **Three-card feature grid** as the only way to show features. Bento, alternating splits, tabs, and scroll-triggered reveals exist.
+- **Placeholder gray boxes / `<TODO: swap image>`.** Use the Unsplash API Tier 1 workflow in `references/assets.md`. Ship with real images.
+- **Generic stock photo of a smiling team in an office.** Either real photos or stylized illustrations; don't fake warmth.
+- **Purple/blue gradient CTA button.** Use the token's `--primary`, full stop.
+- **Over-animating.** One signature motion per page is usually enough.
+- **Mixing 4+ component libraries.** Pick 2–3 max. Tokens fix color / radius / font, not the deeper visual voice.
+- **Ignoring mobile.** Test at 375px. Aceternity / Magic UI heavy effects often break there.
+- **No reduced-motion escape.** Wrap animation-heavy components so `prefers-reduced-motion` users don't get flashed.
+- **Ignoring the domain** — every SaaS doesn't look the same, every agency doesn't look the same.
 
 ## Checklist before you declare done
 
+### Design & copy
 - [ ] Domain reasoning is visible in the section choices and aesthetic
+- [ ] Every headline and sub-head is specific — could not appear unchanged on a competitor site
+- [ ] No phrases from the `references/copy.md` blacklist shipped
 - [ ] Design tokens exist in globals.css / tailwind config before any component was installed
 - [ ] Every installed component reads from tokens — no hardcoded hex / radius / font
-- [ ] Section count matches the user's answer (or the recipe default)
-- [ ] Homepage uses hero header; subpages use compact header
+- [ ] No more than 3 component libraries used
+
+### Structure
+- [ ] Sections match what was agreed with the user
+- [ ] Homepage uses hero header; subpages use compact header (if multi-page)
 - [ ] Critical CTA for the domain is present above the fold AND repeated at the bottom
+
+### Photography & assets
+- [ ] Every photo is real (user-provided or via Unsplash API) — no placeholder gray boxes
+- [ ] Every Unsplash photo has attribution rendered or collected in a footer credits strip
+- [ ] Every image has a meaningful `alt` attribute
+- [ ] `next.config.js` allows `images.unsplash.com` if Unsplash is used
+
+### Mobile & accessibility
+- [ ] Page renders cleanly at 375px, 768px, and 1280px
+- [ ] `prefers-reduced-motion` disables or softens animation-heavy components
+- [ ] Color contrast meets WCAG AA (4.5:1 body, 3:1 large text) for every foreground over its background
+- [ ] Keyboard navigation works — every interactive element has a visible focus state
+
+### Ship
 - [ ] `llms.txt` exists at project root and describes the site
 - [ ] Dev server runs without errors (`npm run dev`)
+- [ ] Deploy path has been suggested to the user (vercel / netlify / cloudflare pages)
 - [ ] You did not add SEO (meta, schema, sitemap) — that's the `/seo` handoff

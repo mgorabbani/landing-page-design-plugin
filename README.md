@@ -24,31 +24,34 @@ When the user says *"build a landing page for a dermatologist in Dubai"* or *"I 
 
 ```
 1. Detect domain            → references/domains.md
-2. Single-page or multi?    → inferred from domain (ask only if ambiguous)
+2. Single-page or multi?    → default single-page; branch only on
+                              strong signal or explicit request
 3. Section list             → domain recipe gives the ordered list
 4. Section anatomy          → for each section, what content slots it needs
-                              (headline, sub, visual, CTA, testimonial count...)
-5. Components per section   → browse current libraries, shortlist, pick
-6. Assets per section       → icon pack, illustration pack, photo source,
-                              patterns, 3D, and video only if the
-                              domain calls for it (options exist; not
-                              a default)
-7. Design tokens            → colors, fonts, radius, shadow, motion — BEFORE install
-8. Build                    → shadcn CLI install, edit for tokens, compose pages
-9. llms.txt                 → auto-generated from what was built
-10. Handoff                 → hand SEO off to /seo skill
+5. Write the copy           → specific, not generic — references/copy.md
+6. Components per section   → browse current libraries, shortlist, pick
+7. Assets per section       → icons, illustrations, photos via Unsplash
+                              API (no placeholders), patterns, 3D, and
+                              video only if the domain calls for it
+8. Design tokens            → colors, fonts, radius, shadow, motion — BEFORE install
+9. Build + responsive/a11y  → shadcn CLI install, edit for tokens,
+                              compose pages, test mobile + reduced-motion
+10. llms.txt                → auto-generated from what was built
+11. Deploy handoff          → suggest vercel / netlify / cloudflare pages
+12. SEO handoff             → hand off to /seo skill
 ```
 
 ## Repo layout
 
 ```
 landing-page-design/
-├── SKILL.md                           # the skill (lean router, ~200 lines)
+├── SKILL.md                           # the skill (lean router, ~290 lines)
 ├── references/
 │   ├── domains.md                     # 12 domain recipes
+│   ├── copy.md                        # headline/sub/CTA patterns + phrase blacklist
 │   ├── registries.md                  # discovery pattern + seed libraries
 │   ├── components-by-section.md       # section anatomy + fit matrix
-│   ├── assets.md                      # icons, illustrations, photos, patterns, 3D, optional video
+│   ├── assets.md                      # icons, illustrations, Unsplash API workflow, patterns, 3D, optional video
 │   └── llms-txt-template.md           # llms.txt generator spec
 ├── .claude-plugin/
 │   └── plugin.json                    # Claude Code plugin wrapper
