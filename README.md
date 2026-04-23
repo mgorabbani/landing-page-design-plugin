@@ -1,124 +1,127 @@
 # landing-page-design
 
-A cross-agent Skill that turns any Claude Code / Codex CLI / Cursor session into a landing page and website generator — without the generic AI-slop aesthetic.
+A cross-agent Skill that turns any Claude Code / Codex CLI / Cursor session into a thoughtful landing page and website generator — without the generic AI-slop aesthetic.
 
 **Status:** v0.1.0 — April 2026. Works on Claude Code (plugin) and any agent that reads SKILL.md (Codex CLI, Cursor, Gemini CLI, Antigravity IDE).
 
-## What it does
+## What this is
 
-Given a request like *"build a landing page for a dermatologist in Dubai"* or *"I need a site for my indie SaaS launch"*, this skill:
+An **instruction manual for AI agents.** Not a template pack. Not an MCP server. Not a frozen catalog of components.
 
-1. **Reasons from domain first** — the type of site (medical, SaaS, agency, e-commerce, portfolio, restaurant, creator, nonprofit, local service, crypto, AI product, real estate) is the master key for sections, aesthetic, and CTAs.
-2. **Asks only what matters** — three questions max; everything else is inferred.
-3. **Locks coherence with design tokens** — colors, fonts, radius, shadow, motion — *before* installing any components.
-4. **Pulls real components live** via the shadcn CLI and MCP servers from shadcn/ui, Magic UI, Aceternity, Kibo UI, Launch UI, and Skiper.
-5. **Edits every installed component** to consume the tokens, so multi-library compositions feel like one designed site.
-6. **Ships AI-discoverable** by auto-generating an `llms.txt` for every site.
-7. **Hands off SEO** rather than doing it — meant to pair with a separate `/seo` skill.
+When the user says *"build a landing page for a dermatologist in Dubai"* or *"I need a site for my indie SaaS launch"*, this skill makes the agent:
+
+1. **Detect the domain** first (the master key).
+2. **Ask only the questions it can't answer** from the filesystem or the request.
+3. **Walk a strict pattern**: domain → single-page or multi → section list → per-section content anatomy → components → assets → design tokens → build → `llms.txt`.
+4. **Discover what's current on the web** before picking components — the shadcn-compatible ecosystem (shadcn/ui, Magic UI, Aceternity, Kibo UI, Launch UI, Skiper, 21st.dev, and newer entrants) changes monthly, so any frozen list in this repo is a starting point, never the source of truth.
+5. **Lock coherence with design tokens** — colors, fonts, radius, shadow, motion — *before* installing any component.
+6. **Install via the shadcn CLI** (universal path for every library above).
+7. **Reach for the right media tool** — icon pack, illustration pack, photography, patterns, 3D, or Remotion for video — based on the domain, not reflexively.
+8. **Ship AI-discoverable** by auto-generating `llms.txt` for every site.
+9. **Hand SEO off** to a separate `/seo` skill rather than doing it here.
+
+## The pattern the skill enforces
+
+```
+1. Detect domain            → references/domains.md
+2. Single-page or multi?    → inferred from domain (ask only if ambiguous)
+3. Section list             → domain recipe gives the ordered list
+4. Section anatomy          → for each section, what content slots it needs
+                              (headline, sub, visual, CTA, testimonial count...)
+5. Components per section   → browse current libraries, shortlist, pick
+6. Assets per section       → icon pack, illustration pack, photo source,
+                              patterns, 3D, video (Remotion) if needed
+7. Design tokens            → colors, fonts, radius, shadow, motion — BEFORE install
+8. Build                    → shadcn CLI install, edit for tokens, compose pages
+9. llms.txt                 → auto-generated from what was built
+10. Handoff                 → hand SEO off to /seo skill
+```
 
 ## Repo layout
 
 ```
 landing-page-design/
-├── SKILL.md                           # the skill (lean router, <500 lines)
+├── SKILL.md                           # the skill (lean router, ~200 lines)
 ├── references/
 │   ├── domains.md                     # 12 domain recipes
-│   ├── registries.md                  # shadcn CLI + MCP server configs
-│   ├── components-by-section.md       # fit matrix
-│   ├── assets.md                      # icons, illustrations, photos, patterns, 3D
+│   ├── registries.md                  # discovery pattern + seed libraries
+│   ├── components-by-section.md       # section anatomy + fit matrix
+│   ├── assets.md                      # icons, illustrations, photos, patterns, 3D, Remotion
 │   └── llms-txt-template.md           # llms.txt generator spec
-├── .mcp.json                          # universal MCP server config
 ├── .claude-plugin/
-│   └── plugin.json                    # Claude Code plugin wrapper (optional)
+│   └── plugin.json                    # Claude Code plugin wrapper
 ├── evals/
-│   └── evals.json                     # test prompts for the skill-creator eval loop
+│   └── evals.json                     # test prompts for eval loops
 └── README.md
 ```
+
+**No bundled MCP.** This repo ships no `.mcp.json`. The skill tells the agent to use *its own* web-fetch / search tool to browse library docs directly. If you want to add MCP servers (shadcn's, Magic UI's, etc.) to your own environment, that's a separate choice you make in your own `.mcp.json` — this skill doesn't require or ship one.
+
+**No frozen catalog.** Components listed in `references/components-by-section.md` are seed examples as of April 2026. The skill instructs the agent to verify current names against each library's docs before installing.
 
 ## Install
 
 ### Claude Code (plugin)
 
-Clone the repo (or a fork) into your Claude Code plugins directory:
+Clone into your plugins directory:
 
 ```bash
-# Global install
 mkdir -p ~/.claude/plugins
 git clone https://github.com/<your-username>/landing-page-design-skill ~/.claude/plugins/landing-page-design
+```
 
-# Or per-project
+Or per-project:
+
+```bash
 mkdir -p .claude/plugins
 git clone https://github.com/<your-username>/landing-page-design-skill .claude/plugins/landing-page-design
 ```
 
-Restart Claude Code. The skill auto-triggers on website/landing-page requests, or invoke it explicitly:
+Restart Claude Code. The skill auto-triggers on website / landing-page requests, or invoke it explicitly:
 
 ```
 /landing-page-design
 ```
 
-MCP servers (shadcn, Magic UI, Kibo UI) are wired up automatically via `.claude-plugin/plugin.json`.
-
 ### Codex CLI
 
-Copy `SKILL.md` and the `references/` folder into `.skills/landing-page-design/` in your project (or global `~/.codex/skills/`):
+Copy `SKILL.md` + `references/` into `.skills/landing-page-design/` in your project (or `~/.codex/skills/` for global):
 
 ```bash
 mkdir -p .skills/landing-page-design
 cp -r SKILL.md references/ .skills/landing-page-design/
 ```
 
-Copy `.mcp.json` into your project root (Codex CLI reads MCP config from the standard location — check your Codex CLI docs for the exact path; as of April 2026 the universal `.mcp.json` is honored).
-
 ### Cursor
 
-Copy `SKILL.md` and `references/` into `.cursor/skills/landing-page-design/` (Cursor picks them up automatically).
-
-For MCP, merge the `mcpServers` block from `.mcp.json` into `.cursor/mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "shadcn": { "command": "npx", "args": ["shadcn@latest", "mcp"] },
-    "magicui": { "command": "npx", "args": ["-y", "@magicuidesign/mcp@latest"] },
-    "kibo-ui": { "command": "npx", "args": ["-y", "mcp-remote", "https://www.kibo-ui.com/api/mcp/mcp"] }
-  }
-}
-```
-
-Restart Cursor.
+Copy `SKILL.md` + `references/` into `.cursor/skills/landing-page-design/`. Cursor picks them up automatically.
 
 ### Other SKILL.md-compatible agents (Gemini CLI, Antigravity IDE)
 
-Drop `SKILL.md` + `references/` into the agent's skills directory (check each agent's docs for the exact path). Manually register the MCP servers using the agent's MCP config format.
-
-## How it works, in one paragraph
-
-The SKILL.md is a lean router (~2000 tokens) that orients the agent: philosophy, the 8-phase flow (context → questions → domain → components → tokens → assembly → llms.txt → handoff), the library map, anti-patterns, and a done-checklist. The deep knowledge lives in `references/` and is progressively loaded — the agent only reads `references/domains.md` when it enters Phase 3, `references/registries.md` and `components-by-section.md` when it enters Phase 4, and so on. This keeps the main context window lean while making the full design library available on demand.
+Drop `SKILL.md` + `references/` into the agent's skills directory — check each agent's docs for the exact path.
 
 ## Philosophy
 
 1. **Domain is the master key.** Sections, components, assets, and copy all cascade from what type of site it is.
-2. **Value thinking, not aesthetic thinking.** *What does the visitor need to feel / know / do?* Then pick components that serve that.
-3. **Let the agent think.** Give it frameworks, not scripts. Only ask questions the agent genuinely can't answer from context.
-4. **Coherence before components.** Design tokens first, installs second, edits third.
-5. **Real components from real libraries via real CLIs and MCPs.** No reinventing effects from scratch. No stale catalogs. Live, versioned, maintained.
-6. **Ship AI-discoverable by default.** Every generated site includes `llms.txt`.
-7. **SEO is a handoff, not a feature.** Keep this skill focused.
+2. **Value thinking, not aesthetic thinking.** *What does the visitor need to feel / know / do?* Then pick the sections and components that serve that.
+3. **Pattern, not prescription.** The skill gives the agent a decision flow and reference material; the agent reasons the specifics.
+4. **Ask the right questions.** Only ask the user what they genuinely know better than the agent. Infer everything else.
+5. **Browse for current truth.** Libraries change. Always check the live docs before picking a component.
+6. **Coherence before components.** Design tokens first, installs second, edits third.
+7. **Real components via the shadcn CLI.** No reinventing effects from scratch. No stale catalogs.
+8. **Ship AI-discoverable by default.** Every generated site includes `llms.txt`.
+9. **SEO is a handoff, not a feature.** Keep this skill focused.
 
 ## Dev & iteration
 
-### Test with the skill-creator eval loop (Claude Code)
+### Evaluate with the skill-creator loop (Claude Code)
 
-[`anthropics/skills`](https://github.com/anthropics/skills) ships a `skill-creator` skill with an eval framework. Install it, then point it at this repo:
+[`anthropics/skills`](https://github.com/anthropics/skills) ships a `skill-creator` skill with an eval framework. Install it and point it at this repo, using `evals/evals.json` as the prompt set:
 
 ```bash
-# From your skill-creator directory
 python -m scripts.aggregate_benchmark <workspace>/iteration-1 --skill-name landing-page-design
 python <skill-creator-path>/eval-viewer/generate_review.py <workspace>/iteration-1 --skill-name "landing-page-design"
 ```
-
-Use `evals/evals.json` as the prompt set.
 
 ### Dogfood
 
@@ -129,9 +132,10 @@ Invoke `/landing-page-design` on a real project (your own portfolio, a friend's 
 Pull requests welcome. Especially:
 
 - New domain recipes (12 isn't enough — B2B marketplaces, dating apps, gaming, edtech, fitness SaaS, etc.)
-- Updated registry namespace URLs when libraries change theirs
-- Better anti-pattern examples for the "AI-slop detection" section in SKILL.md
-- MCP config notes for new agents
+- Additional discovery sources for `references/registries.md` (new curated directories, aggregators, awesome-lists)
+- New section types in the anatomy table (comparison tables, trust bar, demo iframe, etc.)
+- Better anti-pattern examples for the AI-slop detection list
+- Notes for new SKILL.md-compatible agents
 
 ## License
 

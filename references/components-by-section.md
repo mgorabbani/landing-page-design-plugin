@@ -1,6 +1,33 @@
-# Component fit matrix
+# Section anatomy & component fit matrix
 
-Which components fit which section, tagged by suitable domain aesthetic. Use as a shortlist, not a prescription.
+Two things in one file:
+
+1. **Section anatomy** — for each section type, the content slots it needs. Decide anatomy before you pick components.
+2. **Component fit matrix** — example components tagged by section × aesthetic. A seed shortlist, not a canonical list; always cross-check against the library's current docs (see `registries.md` for the discovery pattern).
+
+## Section anatomy (fill these slots before picking components)
+
+| Section | Required content | Optional | Notes |
+|---|---|---|---|
+| **Hero** | Headline, 1 primary CTA, a visual | Eyebrow, sub-headline, secondary CTA, badge / announcement bar | The visual is usually the single biggest design decision — image, product screenshot, abstract 3D, animated effect, or pure typography. |
+| **Features grid / bento** | Section heading, 3–6 feature items (each: icon + title + 1-line description) | Section sub-heading, per-feature visual or animation | Bento sizes matter — mix one "hero" tile with 3–5 smaller ones. |
+| **Social proof (logos)** | 6–10 brand logos (monochrome), optional "as featured in" label | — | Keep it one row, marquee or static. |
+| **Social proof (metrics)** | 3–4 big numbers + labels | Background accent | Use number ticker when motion fits. |
+| **Testimonials** | 3–9 quotes, each with name + role/company | Photo, company logo, star rating | Decide layout: marquee (high volume, low commitment), grid (medium density), carousel (if the quotes are long), single hero quote (premium). |
+| **Pricing** | 2–4 tiers, each with name + price + feature list + CTA | One highlighted tier, annual/monthly toggle, comparison table | Clarity of tier differentiation matters more than the visual. |
+| **FAQ** | 4–8 Q&A pairs | Category grouping | Accordion by default. |
+| **Team** | Headshot + name + role for each member | Short bio, social links | 3–12 members feels right for most sites. |
+| **About / founder story** | Narrative text, photo | Pull quotes, timeline, founding-date badge | Split-layout (image + text) is the safe default. |
+| **Case study / work item** | Client name, 1-line challenge, 2–4 lines outcome, visual | Metrics, testimonial, link to full case | For agency / portfolio sites. |
+| **Blog / resources preview** | 3–6 recent posts (title + date + excerpt + thumbnail) | Category pills, featured post | Link to `/blog` for full list. |
+| **Newsletter capture** | Headline, 1-line promise, email input + button | Privacy note, subscriber count | Usually goes above the footer. |
+| **CTA section** | Focused headline, 1 primary CTA | Sub-headline, secondary action | Contrast background. One decision, not five. |
+| **Footer** | Logo, nav columns, legal links | Social links, newsletter, contact, language switcher | Column count depends on site scale. |
+| **Nav / header** | Logo, 3–6 nav links, 1 CTA | Announcement bar, mega menu, search, user menu | Homepage may use hero-embedded nav; subpages use compact sticky nav. |
+
+## Component fit matrix
+
+Which components fit which section, tagged by suitable domain aesthetic. Use as a shortlist, not a prescription — always verify the component still exists in the library's current docs before installing.
 
 ## How to read
 
