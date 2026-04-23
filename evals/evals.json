@@ -1,0 +1,83 @@
+{
+  "skill": "landing-page-design",
+  "version": "0.1.0",
+  "updated": "2026-04-23",
+  "description": "Evaluation prompts for the landing-page-design skill. Run these with and without the skill loaded and compare outputs. The skill should produce domain-appropriate, coherent sites — not generic AI-slop.",
+  "judging_criteria": [
+    "Domain reasoning is visible — section choices, aesthetic, CTAs match the domain recipe",
+    "Design tokens (colors, fonts, radius, shadow, motion) are defined before any component is installed",
+    "Components come from at least 2 real registries (shadcn + one of Magic UI / Aceternity / Kibo UI / Launch UI / Skiper)",
+    "No hardcoded hex colors, arbitrary radii, or inline font-family in the final page code",
+    "Typography is domain-appropriate — not Inter-everywhere",
+    "Critical CTA for the domain appears above the fold and repeats at the bottom",
+    "llms.txt is generated at project root and correctly describes the site",
+    "Agent did not implement SEO (meta, schema, sitemap) — that's a handoff"
+  ],
+  "prompts": [
+    {
+      "id": "derm-clinic-dubai",
+      "prompt": "Build a landing page for a dermatologist practice in Dubai. Two doctors, focus is on cosmetic dermatology and laser treatments. They want patients to book consultations.",
+      "expected_domain": "medical",
+      "expected_sections": ["hero", "services", "about/credentials", "testimonials", "insurance/logistics", "booking CTA"],
+      "expected_critical_cta": "book consultation",
+      "expected_aesthetic": "calm, warm, clinical-but-human — muted blue/teal/sage, warm off-black, serif display",
+      "must_not": [
+        "purple gradient hero",
+        "generic three-feature-card grid",
+        "meteors or crypto-style 3D animations",
+        "stock smiling team photo without flagging it as placeholder"
+      ]
+    },
+    {
+      "id": "indie-saas-launch",
+      "prompt": "I need a site for my indie SaaS launch. It's a focus-mode app for developers that blocks distractions and tracks deep work sessions. Going live next week.",
+      "expected_domain": "SaaS",
+      "expected_sections": ["hero", "social proof", "features (bento)", "demo", "metrics", "testimonials", "pricing", "FAQ", "CTA"],
+      "expected_critical_cta": "start free trial",
+      "expected_aesthetic": "clean, confident, technical — dark mode optional, Geist or Inter Display, medium motion",
+      "must_include_candidates": [
+        "@magicui/number-ticker",
+        "@aceternity/bento-grid OR Launch UI Bento",
+        "@magicui/marquee for logo row"
+      ]
+    },
+    {
+      "id": "agency-studio",
+      "prompt": "I'm starting a boutique design studio in Lisbon, 3 people, focus on brand identity and type-driven work. Need a site that screams taste.",
+      "expected_domain": "agency",
+      "expected_sections": ["hero (type-driven)", "selected work", "services", "about/team", "contact CTA"],
+      "expected_critical_cta": "start a project / book a call",
+      "expected_aesthetic": "editorial, confident, monochromatic with one accent, editorial serif or bold sans, high taste, one signature motion",
+      "must_not": [
+        "Inter-only typography",
+        "generic SaaS bento grid for work showcase",
+        "multiple signature animations stacked together"
+      ]
+    },
+    {
+      "id": "restaurant-neighborhood",
+      "prompt": "Making a site for a new neighborhood restaurant — Italian, chef-driven, small, takes reservations.",
+      "expected_domain": "restaurant",
+      "expected_sections": ["hero (image-led)", "menu highlights", "story/chef", "gallery", "location/hours", "reservation CTA"],
+      "expected_critical_cta": "reserve / book a table",
+      "expected_aesthetic": "photography-led, atmospheric, warm palette (cream / oxblood / deep green), characterful serif display, low motion",
+      "must_include": [
+        "flagging Unsplash as placeholder if food photography isn't provided"
+      ]
+    },
+    {
+      "id": "crypto-defi-protocol",
+      "prompt": "Landing page for a new DeFi lending protocol launching on Base. Audited, TVL tracking, connect wallet flow.",
+      "expected_domain": "crypto",
+      "expected_sections": ["hero (bold)", "stats (TVL, volume, users)", "how it works", "features", "audits", "tokenomics", "ecosystem", "docs CTA"],
+      "expected_critical_cta": "connect wallet / launch app",
+      "expected_aesthetic": "dark mode default, neon accents, technical sans (Geist / JetBrains Mono), high motion — meteors / globe / animated beams are on-brand",
+      "must_include_candidates": [
+        "@aceternity/globe OR @magicui/globe",
+        "@magicui/meteors",
+        "@magicui/number-ticker for TVL stats",
+        "@magicui/animated-beam for 'how it works' flow"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "landing-page-design",
+  "displayName": "Landing Page Design",
+  "version": "0.1.0",
+  "description": "Build landing pages and websites that look professionally designed, not AI-generated. Domain-first reasoning plus live component registries (shadcn, Magic UI, Aceternity, Kibo UI, Launch UI, Skiper).",
+  "author": {
+    "name": "landing-page-design contributors"
+  },
+  "license": "MIT",
+  "skills": ["."],
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
+    },
+    "magicui": {
+      "command": "npx",
+      "args": ["-y", "@magicuidesign/mcp@latest"]
+    },
+    "kibo-ui": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://www.kibo-ui.com/api/mcp/mcp"]
+    }
+  },
+  "commands": {
+    "landing-page-design": {
+      "description": "Scaffold a landing page or full website using domain-first design reasoning and real component registries.",
+      "skill": "landing-page-design"
+    }
+  }
+}
