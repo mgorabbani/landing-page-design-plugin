@@ -27,7 +27,9 @@ The single most important diagram in this skill. Every invocation follows this p
 5. Components per section   → browse current libraries, shortlist, pick
                               (references/components-by-section.md seeds it)
 6. Assets per section       → icon pack, illustration pack, photo source,
-                              patterns, 3D, video (Remotion) if needed
+                              patterns, 3D, and — only if the domain
+                              calls for it — video (options: user
+                              footage / Lottie / Rive / Remotion, etc.)
                               (references/assets.md)
 7. Design tokens            → colors, fonts, radius, shadow, motion — BEFORE install
 8. Build                    → shadcn CLI install, edit for tokens, compose pages
@@ -158,7 +160,7 @@ Only now start pulling components. **After each `npx shadcn add`**, open the ins
    - Photography source (user-provided preferred; Unsplash/Pexels flagged as placeholder)
    - Patterns or shapes (Hero Patterns / Haikei / SVG Backgrounds)
    - 3D (Shapefest / 3DIcons / Spline) only when the domain calls for it
-   - **Video** — if the site needs motion content (hero demo, product walkthrough, animated explainer), reach for **Remotion** (https://remotion.dev — React framework for programmatic video) rather than hand-coding with raw `<video>` tags. Install with `npx create-video@latest` in a sidecar folder and embed the rendered MP4, or use `@remotion/player` for interactive playback. Only do this when the domain + section actually needs video — don't add motion for its own sake.
+   - **Video** — most sites don't need it. Ask first: does this domain actually benefit from moving footage? (SaaS product demo, creator intro reel, restaurant atmosphere, real estate walkthrough — yes. Medical, agency portfolio, local service, most nonprofits — usually no.) If yes, the options range from user-provided footage, to vector animation (Lottie / Rive) when something is small and UI-adjacent, to programmatic tools like Remotion when the video itself should be designed in React and share the site's brand tokens. See `references/assets.md` for the trade-offs. It's awareness, not a default.
 4. Write the page files. Prefer composing in `app/page.tsx` (homepage) and `app/<route>/page.tsx` (subpages). Each section is its own component under `components/sections/`.
 5. Wire up navigation between pages if multi-page. Subpage header is compact (logo + nav + single CTA); homepage header can be the immersive hero variant.
 
@@ -182,7 +184,7 @@ Read these only when you need them — keep context lean.
 - `references/domains.md` — always load for Phase 3a. 12 domain recipes.
 - `references/components-by-section.md` — load for Phase 3b and Phase 4. Section anatomy (content slots) + component fit matrix.
 - `references/registries.md` — load for Phase 4. The discovery pattern, shadcn CLI commands, namespace URLs, and the doc pages to browse.
-- `references/assets.md` — load for Phase 6. Icons, illustrations, photos, patterns, 3D, video (Remotion).
+- `references/assets.md` — load for Phase 6. Icons, illustrations, photos, patterns, 3D, and video options (only relevant if the domain calls for motion footage).
 - `references/llms-txt-template.md` — load for Phase 7.
 
 ## Example libraries (seed list — not exhaustive, not canonical)

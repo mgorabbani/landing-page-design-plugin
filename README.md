@@ -16,7 +16,7 @@ When the user says *"build a landing page for a dermatologist in Dubai"* or *"I 
 4. **Discover what's current on the web** before picking components — the shadcn-compatible ecosystem (shadcn/ui, Magic UI, Aceternity, Kibo UI, Launch UI, Skiper, 21st.dev, and newer entrants) changes monthly, so any frozen list in this repo is a starting point, never the source of truth.
 5. **Lock coherence with design tokens** — colors, fonts, radius, shadow, motion — *before* installing any component.
 6. **Install via the shadcn CLI** (universal path for every library above).
-7. **Reach for the right media tool** — icon pack, illustration pack, photography, patterns, 3D, or Remotion for video — based on the domain, not reflexively.
+7. **Reach for the right media tool** based on the domain, not reflexively. Icon pack, illustration pack, photography, patterns, 3D, and — only when the domain genuinely calls for it — video (where options like user footage, Lottie, Rive, or Remotion are each awareness-level suggestions, not defaults).
 8. **Ship AI-discoverable** by auto-generating `llms.txt` for every site.
 9. **Hand SEO off** to a separate `/seo` skill rather than doing it here.
 
@@ -30,7 +30,9 @@ When the user says *"build a landing page for a dermatologist in Dubai"* or *"I 
                               (headline, sub, visual, CTA, testimonial count...)
 5. Components per section   → browse current libraries, shortlist, pick
 6. Assets per section       → icon pack, illustration pack, photo source,
-                              patterns, 3D, video (Remotion) if needed
+                              patterns, 3D, and video only if the
+                              domain calls for it (options exist; not
+                              a default)
 7. Design tokens            → colors, fonts, radius, shadow, motion — BEFORE install
 8. Build                    → shadcn CLI install, edit for tokens, compose pages
 9. llms.txt                 → auto-generated from what was built
@@ -46,7 +48,7 @@ landing-page-design/
 │   ├── domains.md                     # 12 domain recipes
 │   ├── registries.md                  # discovery pattern + seed libraries
 │   ├── components-by-section.md       # section anatomy + fit matrix
-│   ├── assets.md                      # icons, illustrations, photos, patterns, 3D, Remotion
+│   ├── assets.md                      # icons, illustrations, photos, patterns, 3D, optional video
 │   └── llms-txt-template.md           # llms.txt generator spec
 ├── .claude-plugin/
 │   └── plugin.json                    # Claude Code plugin wrapper

@@ -84,38 +84,48 @@ npm install @splinetool/react-spline
 
 Import a Spline scene URL into a hero. Performance-heavy — only if the domain calls for it (crypto, AI, agency with a bold signature).
 
-## Video / motion tools
+## Video / motion — awareness, not a default
 
-Most sites don't need video. When they do — product demos, hero reel, animated explainer, social-media cut-downs — don't hand-code with raw `<video>` tags and frame-by-frame CSS. Use a proper tool.
+**First ask: does this domain actually benefit from video?** Most sites don't. A landing page that reads for 10 seconds and then asks for an action rarely needs a moving hero. Defaulting to video is how you get AI-slop with a side of bandwidth bill.
 
-| Source | Use case | URL |
+Domains where video often earns its place:
+
+- SaaS / dev tools — product demo or interactive preview
+- AI product — showing the model do something
+- Creator / course — personal intro reel, sample lesson
+- Restaurant / hospitality — atmosphere, chef at work
+- Real estate — property walkthrough
+- E-commerce with physical products — fit, movement, scale
+
+Domains where video is usually the wrong call:
+
+- Medical, legal, most local services — trust comes from stillness, not motion
+- Agency / portfolio — let the work images speak; reels feel overproduced
+- Nonprofit — real photos of real work tell the story better
+- Crypto / DeFi — a number-ticker on live data says more than a pre-rendered explainer
+
+If — and only if — video fits, here are the options the agent should know about. Pick the lightest tool that gets it done.
+
+| Option | When it fits | Notes |
 |---|---|---|
-| **Remotion** | Programmatic video in React. Render MP4 or play interactively with `@remotion/player`. Best for SaaS demos, animated stats, data-driven explainers, creator intro reels. | https://remotion.dev |
-| **Rive** | Interactive animations / lightweight motion graphics. Good for hero micro-animations that would be overkill as video. | https://rive.app |
-| **Lottie / Lottiefiles** | JSON-based vector animations, small file size. | https://lottiefiles.com |
-| **User-provided MP4 / WebM** | Anything the user already has — product walk-throughs, reels. | — |
-| **Mux** / **Cloudflare Stream** | Video hosting with adaptive bitrate when self-hosting is a problem. | https://mux.com · https://cloudflare.com/products/stream |
+| **User-provided MP4 / WebM** | User already has footage. | Always the first choice. Embed with a native `<video>` tag + poster frame, or host on Mux / Cloudflare Stream for adaptive bitrate. |
+| **Lottie / Lottiefiles** | Small, UI-adjacent vector animations — a logo reveal, an illustrated icon that moves, a micro-animation in a hero. Tiny JSON payloads. | https://lottiefiles.com |
+| **Rive** | Interactive animations the user can drive (hover, scroll, input). A step up from Lottie when the motion needs state. | https://rive.app |
+| **Remotion** | When the video itself should be *designed in React* so it inherits brand tokens, fonts, and can be generated from data. Render to MP4 (sidecar project) or embed `@remotion/player` for live playback. Best for data-driven explainers, animated stats, templated cut-downs. | https://remotion.dev |
+| **Spline scene** | 3D hero element, interactive. Heavier — only on bold-aesthetic sites. | https://spline.design |
+| **Mux / Cloudflare Stream** | Hosting layer when self-hosting a large MP4 is a problem. | https://mux.com · https://cloudflare.com/products/stream |
 
-### Remotion quick-start
+### When motion isn't really video
 
-```bash
-# Scaffold a sidecar Remotion project for rendering
-npx create-video@latest
+Before reaching for any of the above, check whether the need is actually video at all:
 
-# Or, to embed interactive video in the landing site itself:
-npm install @remotion/player remotion
-```
+- Static hero that needs "life" → CSS animation, a Magic UI effect, or a subtle pattern — not video
+- Logo reveal → Lottie, not a rendered clip
+- Stats counting up → a number-ticker component, not a pre-rendered MP4
+- Scroll-triggered feature reveal → a scroll component, not video
+- "Products moving" feel on an e-commerce hero → parallax or looping GIF-sized WebM, not a full video player
 
-Use Remotion when you want the video itself to be designed in React (so it inherits your design tokens, brand fonts, and any dynamic data). Render to MP4 once and embed, or play live with `@remotion/player` — the latter is a bigger bundle, only use when the content changes per user.
-
-### When video is overkill
-
-- Static hero that needs a pulse → CSS animation or a Magic UI effect, not video
-- Logo reveal → Lottie or Rive, not Remotion
-- Stats that count up → `@magicui/number-ticker`, not a rendered video
-- Scrolling feature reveal → scroll-triggered component, not video
-
-Match the tool to the motion complexity.
+Match the tool to the actual motion need. Nine times out of ten, a non-video path is lighter, faster, and reads better.
 
 ## Font loading
 
